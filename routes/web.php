@@ -1,8 +1,4 @@
 <?php
-
-use App\Task;
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,38 +9,16 @@ use Illuminate\Http\Request;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    $tasks = Task::orderBy('created_at', 'asc')->get();
-    
-    return view('tasks', [
-        'tasks' => $tasks
-    ]);
+Route::get('/', function(){
+    return view('welcome');
 });
 
-Route::post('/task', function (Request $request) {
-    $validator = Validator::make($request->all(),[
-        'name' => 'required|max:255',
-    ]);
+Route::get('/tasks', 'TaskController@index');
 
-    if($validator->fails()) {
-        return redirect('/')
-            ->withInput()
-            ->withErrors($validator);
-    }
+Route::post('/task', 'TaskController@store');
 
-    $task = new Task;
-    $task->name = $request->name;
-    $task->save();
+Route::delete('/task/{task}', 'TaskController@destroy');
 
-    return redirect('/');
-});
-
-Route::delete('/task/{id}', function ($id) {
-    Task::findOrFail($id)->delete();
-
-    return redirect('/');
-});
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
