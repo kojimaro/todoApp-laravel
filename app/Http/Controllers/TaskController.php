@@ -52,9 +52,30 @@ class TaskController extends Controller
      */
     public function destroy(Request $request, Task $task)
     {
-        $this->authorize('destroy', $task);
+        $this->authorize('onlyOwner', $task);
 
         $task->delete();
+
+        return redirect('/tasks');
+    }
+
+    /**
+     * 指定したタスクの編集
+     * @param Request $request
+     * @param string $taskId
+     * @return Response
+     */
+    public function edit(Request $request, Task $task)
+    {
+        $this->authorize('onlyOwner', $task);
+
+        $this->validate($request, [
+            'name' => 'required|max:255'
+        ]);
+
+        $task->name = $request->name;
+
+        $task->save();
 
         return redirect('/tasks');
     }
