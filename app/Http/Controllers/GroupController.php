@@ -7,6 +7,14 @@ use Illuminate\Http\Request;
 class GroupController extends Controller
 {
     /**
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    /**
      * 新しいグループの作成
      * @param Request $request
      * @return Response
