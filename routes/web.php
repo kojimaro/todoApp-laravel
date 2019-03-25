@@ -17,8 +17,8 @@ Route::post('/task', 'TaskController@store');
 
 Route::delete('/task/{task}', 'TaskController@destroy');
 
+Route::patch('/task/{task}', 'TaskController@edit');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-
-Route::patch('/task/{task}', 'TaskController@edit');
