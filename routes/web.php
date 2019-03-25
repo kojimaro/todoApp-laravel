@@ -9,6 +9,10 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+/**
+ * TaskController
+ */
 Route::get('/', 'TaskController@index');
 
 Route::get('/tasks', 'TaskController@index');
@@ -18,6 +22,11 @@ Route::post('/task', 'TaskController@store');
 Route::delete('/task/{task}', 'TaskController@destroy');
 
 Route::patch('/task/{task}', 'TaskController@edit');
+
+/**
+ * GroupController
+ */
+Route::post('/group', 'GroupController@store');
 
 Auth::routes();
 
