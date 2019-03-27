@@ -26,6 +26,7 @@ Route::patch('/task/{task}', 'TaskController@edit');
 /**
  * GroupController
  */
+Route::get('/groups', 'GroupController@index');
 Route::post('/group', 'GroupController@store');
 
 Auth::routes();

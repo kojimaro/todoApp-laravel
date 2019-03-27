@@ -14,6 +14,10 @@ class GroupController extends Controller
         $this->middleware('auth');
     }
 
+    public function index(Request $request) {
+        return view('/groups.index');
+    }
+
     /**
      * 新しいグループの作成
      * @param Request $request
