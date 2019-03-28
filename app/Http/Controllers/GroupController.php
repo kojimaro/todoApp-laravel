@@ -42,6 +42,6 @@ class GroupController extends Controller
             'name' => $request->name
         ]);
 
-        return redirect('/');
+        return redirect('/groups');
     }
 }
