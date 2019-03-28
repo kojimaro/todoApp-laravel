@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Repositories\GroupRepository;
+use App\Group;
 
 class GroupController extends Controller
 {
@@ -41,6 +42,19 @@ class GroupController extends Controller
         $request->user()->groups()->create([
             'name' => $request->name
         ]);
+
+        return redirect('/groups');
+    }
+
+    /**
+     * 指定したグループの削除
+     * @param string $groupId
+     * @return Response
+     */
+    public function destroy(Group $group) {
+        $this->authorize('onlyOwner', $group);
+
+        $group->delete();
 
         return redirect('/groups');
     }
