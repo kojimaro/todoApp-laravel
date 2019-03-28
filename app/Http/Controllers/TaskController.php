@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Task;
 use App\Repositories\TaskRepository;
+use App\Repositories\GroupRepository;
+use DebugBar\DebugBar;
 
 class TaskController extends Controller
 {
@@ -15,19 +17,35 @@ class TaskController extends Controller
     protected $tasks;
 
     /**
+     * @var GroupRepository
+     */
+    protected $groups;
+
+    /**
      * @return void
      */
-    public function __construct(TaskRepository $tasks)
+    public function __construct(
+        TaskRepository $tasks, 
+        GroupRepository $groups
+    )
     {
         $this->middleware('auth');
 
         $this->tasks = $tasks;
+
+        $this->groups = $groups;
     }
 
     public function index(Request $request)
     {
+        $tasks = $this->tasks->foruser($request->user());
+        $groups = $this->groups->forOwner($request->user());
+
+        \Debugbar::info($groups);
+
         return view('tasks.index', [
-            'tasks' => $this->tasks->foruser($request->user())
+            'tasks' => $tasks,
+            'groups' => $groups
         ]);
     }
 
