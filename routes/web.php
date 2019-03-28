@@ -28,6 +28,7 @@ Route::patch('/task/{task}', 'TaskController@edit');
  */
 Route::get('/groups', 'GroupController@index');
 Route::post('/group', 'GroupController@store');
+Route::delete('/group/{group}', 'GroupController@destroy');
 
 Auth::routes();
 
