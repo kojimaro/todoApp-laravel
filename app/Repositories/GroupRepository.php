@@ -25,7 +25,7 @@ class GroupRepository
      * @return Model
      * @throws ModelNotFoundException 404
      */
-    public function getGroupId(string $groupId)
+    public function getGroup(string $groupId)
     {
         $groupId = (int) $groupId;
         return Group::findOrFail($groupId);
