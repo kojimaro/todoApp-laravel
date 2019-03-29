@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Task;
 use App\Repositories\TaskRepository;
+use App\Repositories\GroupRepository;
 
 class TaskController extends Controller
 {
@@ -15,19 +16,33 @@ class TaskController extends Controller
     protected $tasks;
 
     /**
+     * @var GroupRepository
+     */
+    protected $groups;
+
+    /**
      * @return void
      */
-    public function __construct(TaskRepository $tasks)
+    public function __construct(
+        TaskRepository $tasks, 
+        GroupRepository $groups
+    )
     {
         $this->middleware('auth');
 
         $this->tasks = $tasks;
+
+        $this->groups = $groups;
     }
 
     public function index(Request $request)
     {
+        $tasks = $this->tasks->foruser($request->user());
+        $groups = $this->groups->forOwner($request->user());
+
         return view('tasks.index', [
-            'tasks' => $this->tasks->foruser($request->user())
+            'tasks' => $tasks,
+            'groups' => $groups
         ]);
     }
 
@@ -36,9 +51,21 @@ class TaskController extends Controller
         $this->validate($request, [
             'name' => 'required|max:255'
         ]);
+    
+        if(!empty($request->group)) {
+            $groupId = (int) $request->group;
+            $group = $this->groups->getGroup($groupId);
+
+            $this->authorize('onlyOwner', $group);
+
+            $groupId = $group->id;
+        } else {
+            $groupId = 0;
+        }
 
         $request->user()->tasks()->create([
-            'name' => $request->name
+            'name' => $request->name,
+            'group_id' => $groupId
         ]);
 
         return redirect('/tasks');
@@ -50,7 +77,7 @@ class TaskController extends Controller
      * @param string $taskId
      * @return Response
      */
-    public function destroy(Request $request, Task $task)
+    public function destroy(Task $task)
     {
         $this->authorize('onlyOwner', $task);
 
