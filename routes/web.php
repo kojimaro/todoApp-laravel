@@ -26,7 +26,7 @@ Route::patch('/task/{task}', 'TaskController@edit');
 /**
  * GroupController
  */
-Route::get('/groups', 'GroupController@index');
+Route::get('/groups', 'GroupController@index')->name('groups.index');
 Route::post('/group', 'GroupController@store');
 Route::delete('/group/{group}', 'GroupController@destroy');
 
