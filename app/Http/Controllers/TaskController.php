@@ -77,7 +77,7 @@ class TaskController extends Controller
      * @param string $taskId
      * @return Response
      */
-    public function destroy(Request $request, Task $task)
+    public function destroy(Task $task)
     {
         $this->authorize('onlyOwner', $task);
 
