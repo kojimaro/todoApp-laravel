@@ -14,11 +14,25 @@
 
                 <!-- タスク名 -->
                 <div class="form-group">
-                    <label for="task" class="col-sm-3 control-label">Task</label>
+                    <label for="task-name" class="control-label">Task</label>
+                    <input type="text" name="name" id="task-name" class="form-control">
+                </div>
 
-                    <div class="col-sm-6">
-                        <input type="text" name="name" id="task-name" class="form-control">
-                    </div>
+                <!-- グループ -->
+                <div class="form-group">
+                    <label for="task-group" class="control-label">
+                        Group
+                    </label>
+                    <select class="form-control" id="task-group" name="group">
+                        <option value=""></option>
+                        @if (count($groups) > 0)
+                            @foreach($groups as $group)
+                                <option value="{{$group->id}}">
+                                    {{$group->name}}
+                                </option>
+                            @endforeach
+                        @endif
+                    </select>
                 </div>
 
                 <!-- タスク追加ボタン -->
