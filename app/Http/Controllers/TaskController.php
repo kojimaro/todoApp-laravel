@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Task;
 use App\Repositories\TaskRepository;
 use App\Repositories\GroupRepository;
-use DebugBar\DebugBar;
 
 class TaskController extends Controller
 {
@@ -41,8 +40,6 @@ class TaskController extends Controller
         $tasks = $this->tasks->foruser($request->user());
         $groups = $this->groups->forOwner($request->user());
 
-        \Debugbar::info($groups);
-
         return view('tasks.index', [
             'tasks' => $tasks,
             'groups' => $groups
@@ -54,9 +51,21 @@ class TaskController extends Controller
         $this->validate($request, [
             'name' => 'required|max:255'
         ]);
+    
+        if(!empty($request->group)) {
+            $groupId = (int) $request->group;
+            $group = $this->groups->getGroup($groupId);
+
+            $this->authorize('onlyOwner', $group);
+
+            $groupId = $group->id;
+        } else {
+            $groupId = 0;
+        }
 
         $request->user()->tasks()->create([
-            'name' => $request->name
+            'name' => $request->name,
+            'group_id' => $groupId
         ]);
 
         return redirect('/tasks');
