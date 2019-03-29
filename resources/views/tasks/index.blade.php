@@ -59,7 +59,9 @@
                     <!-- テーブルヘッダー -->
                     <thead>
                         <th>Task</th>
-                        <th>&nbsp;</th>
+                        <th>Group</th>
+                        <th>Delete</th>
+                        <th>Edit</th>
                     </thead>
 
                     <!-- テーブルボディー -->
@@ -69,6 +71,12 @@
                                 <!-- タスク名 -->
                                 <td class="table-text">
                                     <div>{{ $task->name }}</div>
+                                </td>
+
+                                <td class="table-text">
+                                    @if (empty(!$task->group))
+                                        <div>{{ $task->group->name }}</div>
+                                    @endif
                                 </td>
 
                                 <td>
