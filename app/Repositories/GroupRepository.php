@@ -21,13 +21,12 @@ class GroupRepository
 
     /**
      * 特定グループ取得
-     * @param string $groupId
+     * @param int $groupId
      * @return Model
      * @throws ModelNotFoundException 404
      */
-    public function getGroup(string $groupId)
+    public function getGroup(int $groupId)
     {
-        $groupId = (int) $groupId;
         return Group::findOrFail($groupId);
     }
 }
